@@ -2,14 +2,17 @@
 title: Installation
 ---
 
-This docs will
-This guide will guide you through the installation after downloading sisekolah
+This docs will guide you through the installation after downloading sisekolah
+
+Ensure you use [Laravel Valet For Linux](https://github.com/cpriego/valet-linux) or [Laravel Value for MacOS](https://laravel.com/docs/9.x/valet)
+
+> :warning: This app can't running with `artisan serve` because we need domain for separating tenant by the host name
 
 ## Setup
 
 ### Extract ZIP file
 
-After downloading the file received via email address, extract it with the following command
+After downloading the file, extract it with the following command
 
 ```shell
 unzip sisekolah.zip
@@ -21,14 +24,188 @@ Go into project directory
 cd sisekolah
 ```
 
-### Setup backend dependencies
+### Setup backend
 
 ```shell
 composer install
 ```
 
-### Setup frontend dependencies
+Create `.env` file
+
+```shell
+cp .env.example .env
+```
+
+Update `.env` file
+
+```sheel
+APP_NAME="SISEKOLAH"
+APP_URL=http://domain.domain
+
+VITE_APP_NAME="${APP_NAME}"
+VITE_APP_URL="${APP_URL}"
+
+FILESYSTEM_DISK=public
+QUEUE_CONNECTION=database
+```
+
+Update database connection inside `config/database.php`
+
+Under the `connections` key, unsure you have valid connection to your local database
+
+```php
+'tenant' => [
+    'driver' => 'mysql',
+    'database' => null,
+    'host' => '127.0.0.1',
+    'username' => 'root',
+    'password' => 'root',
+],
+
+'landlord' => [
+    'driver' => 'mysql',
+    'database' => 'si_sekolah_landlord',
+    'host' => '127.0.0.1',
+    'username' => 'root',
+    'password' => 'root',
+],
+```
+
+Below is the default config for **SISEKOLAH**, if you want to make changes please refer to Spatie Multitenancy package [here](https://spatie.be/docs/laravel-multitenancy/v3/)
+
+```php
+<?php
+
+use App\Models\Tenant;
+use Illuminate\Broadcasting\BroadcastEvent;
+use Illuminate\Events\CallQueuedListener;
+use Illuminate\Mail\SendQueuedMailable;
+use Illuminate\Notifications\SendQueuedNotifications;
+use Spatie\Multitenancy\Actions\ForgetCurrentTenantAction;
+use Spatie\Multitenancy\Actions\MakeQueueTenantAwareAction;
+use Spatie\Multitenancy\Actions\MakeTenantCurrentAction;
+use Spatie\Multitenancy\Actions\MigrateTenantAction;
+
+return [
+    /*
+     * This class is responsible for determining which tenant should be current
+     * for the given request.
+     *
+     * This class should extend `Spatie\Multitenancy\TenantFinder\TenantFinder`
+     *
+     */
+    'tenant_finder' => \App\Tasks\TenantFinder::class,
+
+    /*
+     * These fields are used by tenant:artisan command to match one or more tenant
+     */
+    'tenant_artisan_search_fields' => [
+        'id',
+    ],
+
+    /*
+     * These tasks will be performed when switching tenants.
+     *
+     * A valid task is any class that implements Spatie\Multitenancy\Tasks\SwitchTenantTask
+     */
+    'switch_tenant_tasks' => [
+        \Spatie\Multitenancy\Tasks\PrefixCacheTask::class,
+        \Spatie\Multitenancy\Tasks\SwitchTenantDatabaseTask::class,
+        \Spatie\Multitenancy\Tasks\SwitchRouteCacheTask::class,
+        \App\Tasks\SwitchRootUrlTask::class,
+    ],
+
+    /*
+     * This class is the model used for storing configuration on tenants.
+     *
+     * It must be or extend `Spatie\Multitenancy\Models\Tenant::class`
+     */
+    'tenant_model' => Tenant::class,
+
+    /*
+     * If there is a current tenant when dispatching a job, the id of the current tenant
+     * will be automatically set on the job. When the job is executed, the set
+     * tenant on the job will be made current.
+     */
+    'queues_are_tenant_aware_by_default' => true,
+
+    /*
+     * The connection name to reach the tenant database.
+     *
+     * Set to `null` to use the default connection.
+     */
+    'tenant_database_connection_name' => 'tenant',
+
+    /*
+     * The connection name to reach the landlord database
+     */
+    'landlord_database_connection_name' => 'landlord',
+
+    /*
+     * This key will be used to bind the current tenant in the container.
+     */
+    'current_tenant_container_key' => 'currentTenant',
+
+    /**
+     * Set it to `true` if you like to cache the tenant(s) routes
+     * in a shared file using the `SwitchRouteCacheTask`.
+     */
+    'shared_routes_cache' => false,
+
+    /*
+     * You can customize some of the behavior of this package by using our own custom action.
+     * Your custom action should always extend the default one.
+     */
+    'actions' => [
+        'make_tenant_current_action' => MakeTenantCurrentAction::class,
+        'forget_current_tenant_action' => ForgetCurrentTenantAction::class,
+        'make_queue_tenant_aware_action' => MakeQueueTenantAwareAction::class,
+        'migrate_tenant' => MigrateTenantAction::class,
+    ],
+
+    /*
+     * You can customize the way in which the package resolves the queuable to a job.
+     *
+     * For example, using the package laravel-actions (by Loris Leiva), you can
+     * resolve JobDecorator to getAction() like so: JobDecorator::class => 'getAction'
+     */
+    'queueable_to_job' => [
+        SendQueuedMailable::class => 'mailable',
+        SendQueuedNotifications::class => 'notification',
+        CallQueuedListener::class => 'class',
+        BroadcastEvent::class => 'event',
+    ],
+
+    /*
+     * Jobs tenant aware even if these don't implement the TenantAware interface.
+     */
+    'tenant_aware_jobs' => [
+        // ...
+    ],
+
+    /*
+     * Jobs not tenant aware even if these don't implement the NotTenantAware interface.
+     */
+    'not_tenant_aware_jobs' => [
+        // ...
+    ],
+];
+```
+
+### Setup frontend
 
 ```shell
 yarn install
+```
+
+Update `package.json` file, inside the `scripts` key, ensure you put the `--host` param same as the app domain
+
+```json
+"watch": "vite --host=domain.domain"
+```
+
+Running
+
+```shell
+yarn watch
 ```

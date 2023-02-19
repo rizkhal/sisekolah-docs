@@ -7,6 +7,15 @@ module.exports = {
     {
       type: "doc",
       id: "installation",
-    }
+    },
+    {
+      type: "category",
+      label: "Development",
+      collapsed: true,
+      items: [
+        "development/getting-started",
+        "development/tenant"
+    ],
+    },
   ],
 };

@@ -1,0 +1,39 @@
+---
+title: Tenant
+---
+
+# Multi Tenancy
+
+### Migrations
+
+We separating migrations with two directory called `landlord` and `tenant`, the landlord for superadmin and tenant for client
+
+Running migrations for landlord, the migrations file available under `database/migrations/landlord` directory
+
+```shell
+php artisan migrate --path=database/migrations/landlord --database=landlord
+```
+
+Running migrations for tenant, the migrations file available under `database/migrations/tenant` directory
+
+```shell
+php artisan tenants:artisan "migrate --path=database/migrations/tenant --database=tenant"
+```
+
+### Seeders
+
+We separating seeders with 2 file, called `LandlordTableSeeder` and `TenantTableSeeder`
+
+Running seeders for landlord
+
+```shell
+php artisan db:seed --class=Database\\Seeders\\LandlordTableSeeder --database=landlord
+```
+
+Running seeders for tenant
+
+```shell
+php artisan bb:seed --class=Database\\Seeders\\TenantTableSeeder --database=tenant
+```
+
+After running the migrations and seeders, you will have a role `Super Admin` for `Landlord` and `Tenant`

@@ -1,0 +1,170 @@
+---
+title: Structure
+---
+
+# Directory Structure
+
+### All Directory Structure
+
+<details>
+    <summary>View Structure</summary>
+
+    ├── app
+    │   ├── Actions
+    │   │   └── Core
+    │   │       ├── Setting
+    │   │       └── Global
+    │   ├── Casts
+    │   │   └── Core
+    │   │   └── Global
+    │   ├── Console
+    │   │   └── Commands
+    │   │       ├── Core
+    │   │       └── stubs
+    │   ├── Constants
+    │   │   ├── Core
+    │   │   └── Global
+    │   ├── Enums
+    │   │   ├── Core
+    │   │   └── Global
+    │   │   └── Traits
+    │   ├── Exceptions
+    │   ├── Facades
+    │   ├── Hooks
+    │   │   └── Core
+    │   ├── Http
+    │   │   ├── Controllers
+    │   │   │   ├── Core
+    │   │   │   │   ├── Admin
+    │   │   │   │   │   ├── Api
+    │   │   │   │   │   │   └── Setting
+    │   │   │   │   │   ├── Plan
+    │   │   │   │   │   └── Setting
+    │   │   │   │   └── Client
+    │   │   │   │       └── Setting
+    │   │   │   └── Global
+    │   │   │       ├── Auth
+    │   │   │       ├── Json
+    │   │   │       ├── Public
+    │   │   │       ├── Setting
+    │   │   │       └── User
+    │   │   ├── Middleware
+    │   │   └── Requests
+    │   │       ├── Auth
+    │   │       ├── Core
+    │   │       └── Setting
+    │   ├── Inertable
+    │   │   ├── Core
+    │   │   └── Global
+    │   │   └── Setting
+    │   ├── Jobs
+    │   │   └── Core
+    │   ├── Mail
+    │   │   └── Core
+    │   ├── Models
+    │   │   ├── Core
+    │   │   ├── Traits
+    │   │   └── User
+    │   ├── Overrides
+    │   │   ├── Navigator
+    │   │   ├── Support
+    │   │   └── Validation
+    │   ├── Providers
+    │   ├── Repositories
+    │   │   └── Core
+    │   ├── Tasks
+    │   └── Utils
+    │       └── Traits
+    ├── bootstrap
+    ├── config
+    ├── database
+    │   ├── factories
+    │   │   └── User
+    │   ├── migrations
+    │   │   ├── landlord
+    │   │   └── tenant
+    │   └── seeders
+    │       ├── Core
+    │       ├── landlord
+    │       ├── tenant
+    │       └── Traits
+    ├── lang
+    ├── public
+    ├── resources
+    │   ├── assets
+    │   ├── css
+    │   ├── js
+    │   │   ├── composables
+    │   │   ├── packages
+    │   │   │   ├── datatable
+    │   │   │   │   ├── filter
+    │   │   │   │   └── table
+    │   │   │   ├── editor
+    │   │   │   ├── modal
+    │   │   │   │   └── components
+    │   │   │   └── toast
+    │   │   │       └── components
+    │   │   ├── pages
+    │   │   │   ├── auth
+    │   │   │   │   └── register
+    │   │   │   ├── core
+    │   │   │   │   ├── admin
+    │   │   │   │   │   ├── coupon
+    │   │   │   │   │   ├── customer
+    │   │   │   │   │   ├── payment
+    │   │   │   │   │   ├── plan
+    │   │   │   │   │   └── setting
+    │   │   │   │   │       ├── system
+    │   │   │   │   │       │   └── components
+    │   │   │   │   │       ├── template
+    │   │   │   │   │       └── user
+    │   │   │   │   │           └── role
+    │   │   │   │   ├── client
+    │   │   │   │   │   ├── administration
+    │   │   │   │   │   ├── cashier
+    │   │   │   │   │   └── setting
+    │   │   │   │   │       ├── system
+    │   │   │   │   │       │   └── components
+    │   │   │   │   │       ├── template
+    │   │   │   │   │       └── user
+    │   │   │   │   │           └── role
+    │   │   │   │   └── templates
+    │   │   │   │       ├── emails
+    │   │   │   │       └── invoices
+    │   │   │   │           └── components
+    │   │   │   └── public
+    │   │   ├── theme
+    │   │   │   ├── components
+    │   │   │   │   ├── common
+    │   │   │   │   ├── form
+    │   │   │   │   └── layouts
+    │   │   │   └── layouts
+    │   │   ├── types
+    │   │   └── utils
+    │   └── views
+    │       ├── email
+    │       ├── includes
+    │       ├── layouts
+    │       └── suggestion
+    ├── routes
+    │   ├── api
+    │   └── web
+    │       ├── admin
+    │       ├── auth
+    │       ├── breadcrumbs
+    │       ├── client
+    │       ├── global
+    │       └── public
+    ├── storage
+    └── tests
+
+</details>
+
+The project directory always have 2 top directory
+
+    ├── Core
+    │   ├── Admin
+    │   └── Client
+    └── Global
+
+The `Core` directory is used for Core App functionality, and it separating for `SaaS Admin` and `SaaS Client` by `Admin` and `Client` directory, for `Global` directory is used for Global usage, for example if a controller will used for `Admin` and `Client` it will be placed under the `Global` directory
