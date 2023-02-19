@@ -1,6 +1,6 @@
-# LiveKit Documentation
+# Sisekolah Documentation
 
-Documentation site for LiveKit. Help us improve the documentation and PRs are welcome!
+Documentation site for Sisekolah. Help us improve the documentation and PRs are welcome!
 
 ## Installation
 
