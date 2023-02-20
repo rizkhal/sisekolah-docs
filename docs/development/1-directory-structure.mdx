@@ -1,5 +1,5 @@
 ---
-title: Structure
+title: Directory Structure
 ---
 
 # Directory Structure
@@ -168,3 +168,148 @@ The project directory always have 2 top directory
     └── Global
 
 The `Core` directory is used for Core App functionality, and it separating for `SaaS Admin` and `SaaS Client` by `Admin` and `Client` directory, for `Global` directory is used for Global usage, for example if a controller will used for `Admin` and `Client` it will be placed under the `Global` directory
+
+### Overrides
+
+All file under the `Overrides` directory is used to put overrides laravel or packages default function
+
+    ├── Overrides
+    │   │   ├── Navigator
+    │   │   ├── Support
+    │   │   └── Validation
+
+### Hooks
+
+In sisekolah, `Hooks` same as Laravel Event, you can put Event here or create default event from Laravel
+
+    ├── Hooks
+    │   │   └── Core
+
+### Constans
+
+All file under the `Constans` directory is for app constants variable like Email Template Placeholder or other
+
+    ├── Constants
+    │   │   ├── Core
+    │   │   └── Global
+
+### Enums
+
+We using enum to manage type checked from database or other
+
+    │   ├── Enums
+    │   │   ├── Core
+    │   │   └── Global
+    │   │   └── Traits
+
+You can easy create enum using
+
+```shell
+php artisan enum:make TestEnum
+```
+
+It will creating basic enum class, our enum by default use `App\Enums\Traits\InvokableCases` traits, it will make you easy to call enum value as a `method`, for example if you have `StatusEnum.php` like below
+
+```php
+<?php
+
+namespace App\Enums;
+
+use App\Enums\Traits\HasLabels;
+use App\Enums\Traits\InvokableCases;
+
+enum StatusEnum: string
+{
+    use HasLabels,
+        InvokableCases;
+
+    case ACTIVE = 'active';
+    case INACTIVE = 'nonactive';
+}
+```
+
+You can easy to get `ACTIVE` value using
+
+```php
+StatusEnum::ACTIVE() // 'active'
+```
+
+instead of
+
+```php
+StatusEnum::ACTIVE->value // 'active'
+```
+
+### Models
+
+We using default model from laravel with two top directory like other
+
+    ├── Models
+    │   │   ├── Core
+    │   │   │   ├── Admin
+    │   │   │   ├── Client
+    │   │   ├── Global
+    │   │   ├── Traits
+
+For multiple connection database, please see `App\Models\Traits\HasTenantConnection` traits, it using default spatie multitenant trait `Spatie\Multitenancy\Concerns\UsesMultitenancyConfig`
+it's a custom trait to use for global model, for example for **ACL**, we have two model `Role` & `Permission` model under the `Model` directory, two of the model is available for `SaaS Admin` and `SaaS Client`, so i use the `HasTenantConnection` trait insteadof `UsesMultitenancyConfig`, looks the logic
+
+```php
+public function getConnectionName()
+{
+    if (! app()->runningInConsole()) {
+        if (
+            ! resolve(DomainRepository::class)->isLandlord() ||
+            'tenant' === config('database.default')
+        ) {
+            return $this->tenantDatabaseConnectionName();
+        } else {
+            return $this->landlordDatabaseConnectionName();
+        }
+    }
+}
+```
+
+It's just check if the app running inside the subdomain, we will return the tenant connection and landlord if running on root domain
+
+### Migrations & Seeders
+
+We separating migrations with two directory called `landlord` and `tenant`, the landlord for superadmin and tenant for client also for Seeders, We separating seeders with two file, called `LandlordTableSeeder` and `TenantTableSeeder`
+
+### Inertable
+
+Inertable is Datatable by [me](https://github.com/rizkhal/inertable), you can create table using
+
+```shell
+php artisan inertable:make SampleTable
+```
+
+and it will create `SampleTable.php` under the `Inertable` directory
+
+    ├── Inertable
+    │   │   ├── Core
+    │   │   └── Global
+    │   │   └── Setting
+
+### Repositories
+
+All file under this directory is just a wrapper for reusable function
+
+    │   ├── Repositories
+    │   │   └── Core
+
+### Routing
+
+We are using multiple directory to separating routing
+
+    ├── routes
+    │   ├── api
+    │   └── web
+    │       ├── admin
+    │       ├── auth
+    │       ├── breadcrumbs
+    │       ├── client
+    │       ├── global
+    │       └── public
+
+All of the routing file under the `web` directory will be included in `web.php` file using `include_route_files` helper

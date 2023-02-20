@@ -13,8 +13,8 @@ module.exports = {
       label: "Development",
       collapsed: true,
       items: [
-        "development/getting-started",
-        "development/tenant"
+        "development/directory-structure",
+        "development/database"
     ],
     },
   ],
