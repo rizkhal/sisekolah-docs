@@ -1,6 +1,6 @@
 var theme = {
   plain: {
-    background: "#00153C",
+    background: "#10b981",
     color: "#ffffff",
   },
 
