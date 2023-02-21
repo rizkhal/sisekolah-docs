@@ -22,7 +22,7 @@ php artisan tenants:artisan "migrate --path=database/migrations/tenant --databas
 
 ### Seeders
 
-We separating seeders with 2 file, called `LandlordTableSeeder` and `TenantTableSeeder`
+We separating seeders with two file, called `LandlordTableSeeder` and `TenantTableSeeder`
 
 Running seeders for landlord
 
@@ -33,7 +33,7 @@ php artisan db:seed --class=Database\\Seeders\\LandlordTableSeeder --database=la
 Running seeders for tenant
 
 ```shell
-php artisan bb:seed --class=Database\\Seeders\\TenantTableSeeder --database=tenant
+php artisan tenants:artisan "db:seed --class=Database\\Seeders\\TenantTableSeeder --database=tenant"
 ```
 
 After running the migrations and seeders, you will have a role `Super Admin` for `Landlord` and `Tenant`

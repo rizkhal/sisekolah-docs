@@ -18,7 +18,7 @@ module.exports = {
       type: "category",
       label: "Feature",
       collapsed: true,
-      items: ["feature/auth"],
+      items: ["feature/auth", "feature/setting", "feature/coupon&plan"],
     },
   ],
 };
