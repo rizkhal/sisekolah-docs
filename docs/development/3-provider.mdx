@@ -1,0 +1,101 @@
+---
+title: Provider
+---
+
+# Provider
+
+## Default Provider
+
+By default Laravel have five providers under the `app/Providers` directory, you can check it by your self if you want to make any change, we just notice to custom provider we created
+
+## Custom Provider
+
+Currently, we only have two custom providers under the `app/Providers` directory
+
+### MacroServiceProvider
+
+In this provider, we creating some `macro` function using **Laravel Macroable** magic function
+
+#### Relations
+
+We have `BelongsToMany` relations macroable to check current `plans` and `coupons` applied to current tenant.
+For plans, you can do like below
+
+```php
+$currentPlanApplied = tenant()->plans()->current();
+```
+
+That will return current `plans` applied or null if current tenant does't have `plans`
+
+For coupons
+
+```php
+$currentCouponApplied = tenant()->coupons()->current();
+```
+
+That will return current `coupons` applied for current `plans` or null if current tenant does't have `plans` or have `plans` but does't have `coupons`, the `current` method also accept `callable` parameter if you want to make some conditional
+
+```php
+$currentPlanApplied = tenant()->plans()->current(function(Builder $query) {
+    return $query->where('column', 'whatever');
+});
+```
+
+When you pass the argument, the first query is not called because we using `->when()` to only accept argument if it exists or default query if argument is null
+
+#### Request
+
+You can check the incoming request **has tenant** or not using
+
+```php
+if ($request->hasTenant()) {
+    // has tenant
+}
+```
+
+Or you can check using spatie build in function
+
+```php
+Tenant::checkCurrent();
+```
+
+Please refer from spatie multitenancy docs [here](https://spatie.be/docs/laravel-multitenancy/v3/basic-usage/working-with-the-current-tenant)
+
+#### RedirectResponse
+
+We have four redirect response `macroable` for append some session to inertia props
+
+- success
+- info
+- warning
+- error
+
+You can use that's like
+
+```php
+return back()->success(__('Your success message here'));
+```
+
+It will fire vue3 toast to create notification based on what method do you use
+
+We also have `title` created from `Inertia\Response` macroable, thats will append your page title to inertia, you can use like
+
+```php
+return inertia('page/to/view')->title(__('Your awesome page title here'));
+```
+
+#### Builder
+
+We have `Builder` macroable to `shorthand` search term from database called `whereLike`, you can use that like
+
+```php
+Model::query()->when($request->get('query'), function(Builder $query, $searchQuery) {
+    return $query->whereLike(['column', 'column.with.relations'], trim($searchQuery));
+})->get();
+```
+
+### NavigatorServiceProvider
+
+In this provider, we use to create menu for user, we using [this](https://github.com/nedwors/navigator) to create menu navigator
+
+All of the custom provider is registered at `config/app.php`
