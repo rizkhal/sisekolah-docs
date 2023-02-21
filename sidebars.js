@@ -12,10 +12,13 @@ module.exports = {
       type: "category",
       label: "Development",
       collapsed: true,
-      items: [
-        "development/directory-structure",
-        "development/database"
-    ],
+      items: ["development/directory-structure", "development/database"],
+    },
+    {
+      type: "category",
+      label: "Feature",
+      collapsed: true,
+      items: ["feature/auth"],
     },
   ],
 };
