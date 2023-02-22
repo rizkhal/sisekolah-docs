@@ -33,7 +33,9 @@ For coupons
 $currentCouponApplied = tenant()->coupons()->current();
 ```
 
-That will return current `coupons` applied for current `plans` or null if current tenant does't have `plans` or have `plans` but does't have `coupons`, the `current` method also accept `callable` parameter if you want to make some conditional
+That will return current `coupons` applied for current `plans` or null if current tenant does't have `plans` or have `plans` but does't have `coupons`.
+
+The `current` method also accept `callable` parameter if you want to make some conditional
 
 ```php
 $currentPlanApplied = tenant()->plans()->current(function(Builder $query) {
@@ -41,7 +43,7 @@ $currentPlanApplied = tenant()->plans()->current(function(Builder $query) {
 });
 ```
 
-When you pass the argument, the first query is not called because we using `->when()` to only accept argument if it exists or default query if argument is null
+When you pass the argument, the default query is not called because we using `->when()` conditional and only running query from argument, or default query if argument is not passed
 
 #### Request
 
@@ -96,6 +98,6 @@ Model::query()->when($request->get('query'), function(Builder $query, $searchQue
 
 ### NavigatorServiceProvider
 
-In this provider, we use to create menu for user, we using [this](https://github.com/nedwors/navigator) to create menu navigator
+In this provider, we use to create menu for user, we using [this great package](https://github.com/nedwors/navigator) to create our menu navigator
 
 All of the custom provider is registered at `config/app.php`

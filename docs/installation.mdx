@@ -45,9 +45,11 @@ Update `.env` file
 ```sheel
 APP_NAME="SISEKOLAH"
 APP_URL=http://domain.domain
+APP_DOMAIN=sisekolah.test
 
 VITE_APP_NAME="${APP_NAME}"
 VITE_APP_URL="${APP_URL}"
+VITE_APP_DOMAIN="${APP_DOMAIN}"
 
 FILESYSTEM_DISK=public
 QUEUE_CONNECTION=database
@@ -55,7 +57,13 @@ QUEUE_CONNECTION=database
 
 Update database connection inside `config/database.php`
 
-Under the `connections` key, unsure you have valid connection to your local database
+Under the `connections` key, we have two connection called `tenant` and `landlord`
+
+:::caution
+
+Keep the __tenant connection__ database value to null, the database will be changed _on the fly_ using `HasTenantConnection` trait
+
+:::
 
 ```php
 'tenant' => [
