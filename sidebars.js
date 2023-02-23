@@ -20,6 +20,15 @@ module.exports = {
     },
     {
       type: "category",
+      label: "Deployment",
+      collapsed: true,
+      items: [
+        "deployment/environment",
+        "deployment/subdomain",
+      ],
+    },
+    {
+      type: "category",
       label: "Feature",
       collapsed: true,
       items: ["feature/auth", "feature/setting", "feature/coupon&plan"],

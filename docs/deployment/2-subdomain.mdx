@@ -1,0 +1,26 @@
+---
+title: Subdomain
+---
+
+# Subdomain
+
+Because this application using dynamic subdomain, so you also must have Dynamic [Domain Name System (DNS)](https://www.cloudflare.com/learning/dns/what-is-dns/)
+
+## How to setup dynamic subdomain?
+
+A wildcard DNS record is a record that will match requests for non-existent subdomains. A wildcard DNS record is specified by using a **`*`** as the part of a domain name, e.g. **\*.example.com**
+
+:::info
+
+A wildcard DNS record does not cover a root domain (e.g. yourdomain.tld), thus you will need to create a record for @ host additionally.
+Also, if a separate subdomain is created, it has a higher priority than wildcard.
+
+:::
+
+A wildcard record can be set up for the following record types: A, AAAA, ALIAS, CNAME, TXT, URL Redirect, MX.
+
+The sample config is below
+
+| Type     | Host | Value                  |
+| -------- | ---- | ----                   |
+| A Record | \*   | Your Server IP Address |
